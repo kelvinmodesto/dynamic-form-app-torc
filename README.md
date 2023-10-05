@@ -49,7 +49,7 @@ This will create a `build` folder with the optimized and minified production-rea
 The project structure is organized as follows:
 
 ```kotlin
- form-app-torc/
+ dynamic-form-app-torc/
   ├── public/
   │   ├── index.html
   │   └── ...
