@@ -7,10 +7,25 @@ function App() {
     const [age, setAge] = useState<string>('');
     const [gender, setGender] = useState<string>('')
   const onChangeName = (evt: ChangeEvent<HTMLInputElement>) => {
-      setName(evt.target.value)
+      try {
+          const { value }= evt.target;
+          setName(evt.target.value);
+      } catch(err) {
+          console.error(`Error: ${err}`)
+      }
+
   }
   const onChangeAge = (evt: ChangeEvent<HTMLInputElement>) => {
-        setAge(evt.target.value)
+        try {
+            const value: number = Number(evt.target.value);
+
+            if (isNaN(value)) throw new Error('The value is not a number');
+            if (value  < 0 && value > 125) throw new Error('Invalid age');
+
+            setAge(evt.target.value);
+        } catch(err){
+          console.error(`Error: ${err}`);
+        }
   }
 
   const onChangeGender = (evt: ChangeEvent<HTMLSelectElement>) => {
@@ -24,11 +39,12 @@ function App() {
   return (
       <DynamicForm
           items={[
-              { type: 'text',body: { type: 'text', placeholder: 'Type your name here', label: 'name', value: name, change: onChangeName }},
-              { type: 'text', body: { type: 'number', placeholder: 'Type your age here', label: 'age', value: age, change: onChangeAge } },
+              { type: 'text',body: { type: 'text', placeholder: 'Type your name here', required: true, label: 'Name', value: name, change: onChangeName }},
+              { type: 'text', body: { type: 'number', min: 0, max: 125, required: true, placeholder: 'Type your age here', label: 'Age', value: age, change: onChangeAge } },
               { type: 'select', body: {
                       name: 'gender',
                       value: gender,
+                      required: true,
                       options: [
                           {value: 'male', text: 'Male'},
                           {value: 'female', text: 'Female'},

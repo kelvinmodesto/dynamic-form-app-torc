@@ -1,11 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import DynamicForm from './DynamicForm';
 import { FormType, InputType, OptionType, SelectType, SubmitType } from "../../@types";
 
 
-const mockInputName: InputType = { type: 'text', label: 'name', value: '', change: jest.fn() };
-const mockInputAge: InputType = { type: 'number', label: 'age', value: '32', change: jest.fn() };
+const mockInputName: InputType = { type: 'text', label: 'name', value: '', change: jest.fn(), placeholder: 'name' };
+const mockInputAge: InputType = { type: 'number', label: 'age', value: '32', change: jest.fn(), placeholder: 'age' };
 const mockMaleGenderOption: OptionType = {value: 'male', text: 'Male'};
 const mockFemaleGenderOption: OptionType = {value: 'female', text: 'Female'};
 const mockNonBinaryOption: OptionType = {value: 'nonBinary', text: 'Non-Binary'};
@@ -57,7 +57,7 @@ describe('dynamic form component tests', () => {
         expect(errorMessage).toBeInTheDocument();
     });
 
-    it('render complete form', () => {
+    it('should submit the form', () => {
         const { items, submit }: FormType = {
             items: [
                 { type: 'text',body: mockInputName},
@@ -67,8 +67,18 @@ describe('dynamic form component tests', () => {
             submit: mockSubmitButton
         };
         render(<DynamicForm items={items} submit={submit} />);
-        const selectElement = screen.queryByText(/select your gender/i);
-        expect(selectElement).toBeInTheDocument();
+
+        const inputName = screen.getByPlaceholderText('name')
+        const inputAge = screen.getByPlaceholderText('age');
+        const selectElement = screen.getByText(/select your gender/i);
+        const btnElement = screen.getByText(/go/i);
+
+        fireEvent.change(inputName, { target: { value: 'John Doe' } });
+        fireEvent.change(inputAge, { target: { value: '30' } });
+        fireEvent.change(selectElement, { target: { value: 'male' } });
+        fireEvent.click(btnElement);
+
+        expect(submit.action).toBeCalled();
     });
 
 });

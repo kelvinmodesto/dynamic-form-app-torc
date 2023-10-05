@@ -11,21 +11,24 @@ const DynamicForm: FunctionComponent<FormType> = (form: FormType) => {
                     const { body } = item;
                     if (item.type !== 'select') {
                         const input: InputType = body as InputType;
-                        return <input autoFocus placeholder={input.placeholder} key={`${input.value}-${index}`} onChange={input.change} type={input.type} value={input.value} />
+                        return <div className="inputField">
+                            <label>{input.label}</label>
+                            <input className="field" required={input.required} autoFocus min={input.min} max={input.max} placeholder={input.placeholder} key={`${input.value}-${index}`} onChange={input.change} type={input.type} value={input.value} />
+                        </div>
                     }
                     const select: SelectType = body as SelectType;
                     if (select.options.length > 0) {
-                        return <select onChange={select.change} key={index}>
+                        return <select className="field" onChange={select.change} key={index} required={select.required}>
                             <option key='gender' defaultChecked value=''>Select your gender</option>
                             {select.options.map((sel: OptionType, index) => {
-                                return <option key={`${sel.value}-${index}`} value={sel.value}>{sel.text}</option>;
+                                return <option onChange={select.change} key={`${sel.value}-${index}`} value={sel.value}>{sel.text}</option>;
                             })}
                         </select>;
                     }
                     return null;
                 })
             }
-            <button type="submit">{form.submit.text}</button>
+            <button className="btn" type="submit">{form.submit.text}</button>
         </form>}
     </div>
 };
