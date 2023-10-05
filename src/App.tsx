@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import DynamicForm from './components/DynamicForm/DynamicForm';
 import './App.css';
 
@@ -6,14 +6,14 @@ function App() {
     const [name, setName] = useState<string>('');
     const [age, setAge] = useState<string>('');
     const [gender, setGender] = useState<string>('')
-  const onChangeName = (evt: any) => {
+  const onChangeName = (evt: ChangeEvent<HTMLInputElement>) => {
       setName(evt.target.value)
   }
-  const onChangeAge = (evt: any) => {
+  const onChangeAge = (evt: ChangeEvent<HTMLInputElement>) => {
         setAge(evt.target.value)
   }
 
-  const onChangeGender = (evt: any) => {
+  const onChangeGender = (evt: ChangeEvent<HTMLSelectElement>) => {
       setGender(evt.target.value);
   }
 

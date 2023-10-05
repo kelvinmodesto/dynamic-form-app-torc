@@ -1,5 +1,3 @@
-import {ChangeEvent} from "react";
-
 export type EntryType = 'text' | 'number' | 'date';
 
 export type InputType = { type: EntryType, label?: string, placeholder?: string, value: string, change: (ChangeEvent) => void  };
